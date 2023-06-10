@@ -16,7 +16,8 @@ const registerUser = async (req, res) => {
         let user = await User.create({ userName, password: setPassword });
         user = user.toObject();
         delete user.password;
-        res.status(200).send({ status: true, message: "User Created" });
+        return res.status(200).json({ success: true, data: user, message: "User created" });
+        // res.status(200).send({ status: true, message: "User Created" });
     } catch (error) {
         res.status(500).send({ status: false, message: error });
         console.log(error)

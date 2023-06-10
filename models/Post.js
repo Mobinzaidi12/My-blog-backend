@@ -6,6 +6,7 @@ const postSchemma = mongoose.Schema({
     summary: String,
     content: String,
     cover: String,
+    author: String,
 }, {
     timestamps: true
 });
