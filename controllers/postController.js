@@ -1,8 +1,8 @@
 const Post = require('../models/Post');
 const fs = require('fs');
 const path = require('path');
-const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+const { info } = require('console');
 
 const createPost = async (req, res) => {
     try {
@@ -13,6 +13,8 @@ const createPost = async (req, res) => {
         const newPath = path.join(__dirname, '..', 'uploads', parts.join('.'));
 
         const { title, summary, content, author } = req.body;
+
+
 
         fs.rename(tempPath, newPath, (err) => {
             if (err) {
@@ -36,4 +38,22 @@ const createPost = async (req, res) => {
     }
 };
 
-module.exports = { createPost };
+
+const getPost = async (req, res) => {
+
+    try {
+        let postData = await Post.find();
+        if (postData.length < 1) {
+            res.status(400).json({ status: false, message: "Data Not found" })
+        }
+        res.status(200).json({ status: true, postData });
+        console.log(postData)
+
+    } catch (error) {
+        throw error;
+    }
+
+}
+
+
+module.exports = { createPost, getPost };
