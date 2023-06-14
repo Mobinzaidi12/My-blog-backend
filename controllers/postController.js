@@ -38,22 +38,21 @@ const createPost = async (req, res) => {
     }
 };
 
-
 const getPost = async (req, res) => {
-
     try {
-        let postData = await Post.find();
-        if (postData.length < 1) {
-            res.status(400).json({ status: false, message: "Data Not found" })
+        const posts = await Post.find();
+
+        if (posts.length < 1) {
+            return res.status(404).json({ status: false, message: 'Data not found' });
         }
-        res.status(200).json({ status: true, postData });
-        console.log(postData)
 
+        res.status(200).json({ status: true, posts });
     } catch (error) {
-        throw error;
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
     }
+};
 
-}
 
 
 module.exports = { createPost, getPost };

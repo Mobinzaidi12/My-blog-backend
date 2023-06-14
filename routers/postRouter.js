@@ -5,10 +5,10 @@ const uploads = multer({ dest: 'uploads/' });
 const authMiddlewre = require('../middleware/auth')
 
 const postRouter = Router()
-postRouter.use(authMiddlewre);
+// postRouter.use(authMiddlewre);
 
 postRouter.post('/create', uploads.single("file"), createPost);
-postRouter.get('/getPost', getPost);
+postRouter.get('/posts', getPost);
 
 
 module.exports = postRouter;
