@@ -1,28 +1,15 @@
 const Post = require('../models/Post');
 const fs = require('fs');
-const path = require('path');
-const jwt = require('jsonwebtoken');
-const { info } = require('console');
 
 const createPost = async (req, res) => {
     try {
-        const file = req.file;
-        const { originalname, path: tempPath } = req.file;
+        const { originalname, path } = req.file;
         const parts = originalname.split('.');
-        const ext = path.extname(originalname);
-        const newPath = path.join(__dirname, '..', 'uploads', parts.join('.'));
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext
+        fs.renameSync(path, newPath);
 
         const { title, summary, content, author } = req.body;
-
-
-
-        fs.rename(tempPath, newPath, (err) => {
-            if (err) {
-                // Handle the error
-                return res.status(500).json({ error: 'Failed to move file' });
-            }
-            // res.status(200).json({ ext });
-        });
 
         const postDoc = await Post.create({
             title,
@@ -45,6 +32,7 @@ const getPost = async (req, res) => {
         if (posts.length < 1) {
             return res.status(404).json({ status: false, message: 'Data not found' });
         }
+
 
         res.status(200).json({ status: true, posts });
     } catch (error) {
