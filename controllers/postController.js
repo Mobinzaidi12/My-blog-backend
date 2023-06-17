@@ -9,14 +9,14 @@ const createPost = async (req, res) => {
         const newPath = path + '.' + ext
         fs.renameSync(path, newPath);
 
-        const { title, summary, content, author } = req.body;
+        const { title, summary, content } = req.body;
 
         const postDoc = await Post.create({
             title,
             summary,
             content,
             cover: newPath,
-            author
+            author: req.user.userName
         });
         res.status(200).json({ status: true, postDoc });
 
@@ -36,11 +36,22 @@ const getPost = async (req, res) => {
 
         res.status(200).json({ status: true, posts });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ status: false, message: 'Internal server error' });
     }
 };
 
 
+const getPostById = async (req, res) => {
+    try {
+        const { id } = req.params
+        const data = await Post.findById(id)
+        res.status(200).json({ status: true, data })
+    } catch (error) {
+        res.status(500).json({ status: false, message: 'Internal server error' });
+    }
 
-module.exports = { createPost, getPost };
+}
+
+
+
+module.exports = { createPost, getPost, getPostById };
