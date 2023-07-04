@@ -10,7 +10,7 @@ const postRouter = Router()
 postRouter.post('/create', uploads.single("file"), authMiddlewre, createPost);
 postRouter.get('/all', getPost);
 postRouter.route('/:id').get(authMiddlewre, getPostById)
-postRouter.put('/:id', authMiddlewre, updatePost)
+postRouter.put('/:id', uploads.single("file"), authMiddlewre, updatePost)
 
 
 module.exports = postRouter;

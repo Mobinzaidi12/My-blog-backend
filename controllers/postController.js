@@ -70,6 +70,7 @@ const updatePost = async (req, res) => {
 
         const { id } = req.params;
         const { title, summary, content } = req.body;
+        console.log(req.body.title)
         let cover = newPath;
         const existingPost = await Post.findById(id);
         if (existingPost) {
@@ -86,15 +87,12 @@ const updatePost = async (req, res) => {
                     author: req.user.userName
                 }
             });
-        res.status(200).json({ status: true, postDoc });
-        console.log(postDoc.title)
 
+        res.status(200).json({ status: true, postDoc });
     } catch (error) {
         res.status(500).json({ status: false, message: 'Internal server error' });
     }
 
 }
-
-
 
 module.exports = { createPost, getPost, getPostById, updatePost };
